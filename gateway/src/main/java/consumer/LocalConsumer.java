@@ -35,18 +35,18 @@ public class LocalConsumer implements  Consumer{
                         try{
                             String msg = cache.take();
                             JSONObject json = JSONObject.parseObject(msg);
-                            String uid = json.getString("uId");
+                            String uId = json.getString("uId");
                             String dataType = json.getString("dataType");
                             String info = json.getString("info");
                             String deviceName = (String)json.get("deviceName") ;
 
-                            if(uid==null||dataType==null||info==null||deviceName==null){
+                            if(uId==null||dataType==null||info==null||deviceName==null){
                                 System.err.println("missing paras because of null");
                                 continue;
                             }
 
                             Device device = new Device();
-                            device.setuId(uid);
+                            device.setuId(uId);
                             device.setInfo(info);
                             device.setDeviceName(deviceName);
                             receiver.receive(device,dataType);
