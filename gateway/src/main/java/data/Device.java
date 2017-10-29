@@ -82,7 +82,7 @@ public class Device {
                 ", deviceAccess='" + deviceAccess + '\'' +
                 ", deviceId='" + deviceId + '\'' +
                 ", deviceName='" + deviceName + '\'' +
-                '}';
+                '}'+info;
     }
 
     public Device(String uId, String deviceAccess, String deviceId, String deviceName) {
