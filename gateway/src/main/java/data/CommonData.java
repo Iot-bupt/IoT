@@ -1,11 +1,18 @@
 package data;
 
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Transaction;
+
 import java.io.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Administrator on 2017/10/24.
+ *
  */
 public class CommonData {
     public LinkedBlockingQueue<String> rocketMQMsgCache;
@@ -37,4 +44,32 @@ public class CommonData {
         return instance;
     }
 
+    private boolean tjl = false ;
+
+    protected void init() {
+        if (!tjl) return ;
+
+        // 初始化时，从持久化中加载信息
+        HashMap<String, Device> allDevices = RedisUtil.getAllDevices();
+        for(Device device : allDevices.values()) {
+            devicesTokens.put(device.getuId(), device.getDeviceAccess()) ;
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        if (!tjl) return ;
+
+        // 对内存数据进行持久化操作
+        //RedisUtil.setAllDevices();
+        HashMap<String, Device> map = new HashMap() ;
+
+        for(Map.Entry<String, String> et : devicesTokens.entrySet()) {
+            String uid = et.getKey() ;
+            String token = et.getValue() ;
+            map.put(uid, new Device(uid, token)) ;
+        }
+
+        RedisUtil.setAllDevices(map);
+    }
 }

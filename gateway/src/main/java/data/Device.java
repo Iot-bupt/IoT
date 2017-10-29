@@ -1,5 +1,8 @@
 package data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by tangjialiang on 2017/10/18.
  *
@@ -60,6 +63,16 @@ public class Device {
     public Device(String uId, String deviceName) {
         this.uId = uId ;
         this.deviceName = deviceName ;
+    }
+
+    public Map toMap() {
+        HashMap<String, String> map = new HashMap<>() ;
+        map.put("uId", getuId()) ;
+        map.put("deviceAccess", getDeviceAccess()) ;
+        map.put("deviceId", getDeviceId()) ;
+        map.put("deviceName", getDeviceName()) ;
+        map.put("info", getInfo()) ;
+        return map ;
     }
 
     @Override
