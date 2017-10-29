@@ -5,6 +5,7 @@ package data;
  *
  */
 
+import com.sun.javafx.fxml.expression.Expression;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -132,6 +133,32 @@ public class RedisUtil {
         } finally{
             returnResource(jedis);
         }
+    }
+
+    public static Map<String,String> hmgetAll(String key) {
+        Jedis jedis = getJedis();
+        try {
+            Map<String,String> hmget = jedis.hgetAll(key);
+            return hmget ;
+        } catch (Exception e) {
+            logger.error("get key error : " + key) ;
+        }finally{
+            returnResource(jedis);
+        }
+        return null ;
+    }
+
+    public static boolean  hmSetOne(String key, String uId, String Token) {
+        Jedis jedis = getJedis();
+        try {
+            long time  = jedis.hset(key, uId, Token);
+            return true ;
+        } catch (Exception e) {
+            logger.error("get key error : " + key) ;
+        }finally{
+            returnResource(jedis);
+        }
+        return false;
     }
 
     public static List<String> hmget(String uid, String ...args) {

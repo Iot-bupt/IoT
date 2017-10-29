@@ -14,4 +14,5 @@ public class Config {
 
     public static String TOPIC = "iotTest";
     public static String TAG = "iot";
+    public static String REDISDEVICESKEY = "devices";
 }

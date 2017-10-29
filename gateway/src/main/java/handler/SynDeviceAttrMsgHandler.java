@@ -3,6 +3,7 @@ package handler;
 import config.Config;
 import data.CommonData;
 import data.Device;
+import data.RedisUtil;
 import util.ThingsBoardApi;
 
 import java.io.*;
@@ -21,8 +22,6 @@ public class SynDeviceAttrMsgHandler implements  Handler{
         try{
             thingsBoardApi   = ThingsBoardApi.getInstance(Config.THINGSBOARD_URL,Config.THINGSBOARD_PORT);
             userTocken = thingsBoardApi.api_token(Config.USER_NAME,Config.PASSWORD) ;
-           // bw =  new BufferedWriter(new OutputStreamWriter(new FileOutputStream("gateway/src/main/resources/persist")) );
-          //  bw =  new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/iot/IoT/persist",true)) );
         }catch(Exception e){
             System.err.println("init SynDeviceAttrMsgHandler failed");
         }
@@ -50,9 +49,7 @@ public class SynDeviceAttrMsgHandler implements  Handler{
                 String deviceToken = thingsBoardApi.api_accessToken(userTocken, deviceId);
                 thingsBoardApi.api_attributes(userTocken, deviceToken, device.getInfo());
                 CommonData.getInstance().devicesTokens.put(device.getuId(), deviceToken);
-                String line = device.getuId()+" " +deviceToken+"\n";
-            //    bw.write(line);
-             //   bw.flush();
+                RedisUtil.hmSetOne(Config.REDISDEVICESKEY,device.getuId(),deviceToken);
             }
         }catch(Exception e){
             System.err.println("fail to handle msg ");
