@@ -2,6 +2,7 @@ package util;
 
 import com.alibaba.fastjson.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -109,7 +110,8 @@ public class ThingsBoardApi {
 
         // 消息体（为post请求）
         JSONObject msgjson = new JSONObject();
-        msgjson.put("name", deviceName);
+        String name  = URLEncoder.encode(deviceName,"utf-8");
+        msgjson.put("name", name);
         msgjson.put("type", deviceType) ;
 
         // 发送这个请求

@@ -6,6 +6,7 @@ import data.Device;
 import util.ThingsBoardApi;
 
 import java.io.*;
+import java.net.URLEncoder;
 
 /**
  * Created by Administrator on 2017/10/24.
@@ -21,7 +22,7 @@ public class SynDeviceAttrMsgHandler implements  Handler{
             thingsBoardApi   = ThingsBoardApi.getInstance(Config.THINGSBOARD_URL,Config.THINGSBOARD_PORT);
             userTocken = thingsBoardApi.api_token(Config.USER_NAME,Config.PASSWORD) ;
            // bw =  new BufferedWriter(new OutputStreamWriter(new FileOutputStream("gateway/src/main/resources/persist")) );
-            bw =  new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/iot/IoT/persist",true)) );
+          //  bw =  new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/iot/IoT/persist",true)) );
         }catch(Exception e){
             System.err.println("init SynDeviceAttrMsgHandler failed");
         }
@@ -44,13 +45,14 @@ public class SynDeviceAttrMsgHandler implements  Handler{
                 String deviceToken = CommonData.getInstance().devicesTokens.get(device.getuId());
                 thingsBoardApi.api_attributes(userTocken, deviceToken, device.getInfo());
             } else {
+                System.out.print("ceeat a device = "+device );
                 String deviceId = thingsBoardApi.api_device(userTocken, device.getDeviceName(), "default");
                 String deviceToken = thingsBoardApi.api_accessToken(userTocken, deviceId);
                 thingsBoardApi.api_attributes(userTocken, deviceToken, device.getInfo());
                 CommonData.getInstance().devicesTokens.put(device.getuId(), deviceToken);
                 String line = device.getuId()+" " +deviceToken+"\n";
-                bw.write(line);
-                bw.flush();
+            //    bw.write(line);
+             //   bw.flush();
             }
         }catch(Exception e){
             System.err.println("fail to handle msg ");

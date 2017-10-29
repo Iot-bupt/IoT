@@ -16,13 +16,13 @@ public class CommonData {
             rocketMQMsgCache  = new LinkedBlockingQueue();
             devicesTokens = new ConcurrentHashMap<String, String>();
             BufferedReader br =  new BufferedReader(new InputStreamReader(new FileInputStream("/home/iot/IoT/persist")) );
-            String line;
-            while ((line=br.readLine())!=null) {
-                String data[] = line.split(" ");
-                if(data.length!=2) continue;
-                devicesTokens.put(data[0],data[1]);
-            }
-            br.close();
+//            String line;
+//            while ((line=br.readLine())!=null) {
+//                String data[] = line.split(" ");
+//                if(data.length!=2) continue;
+//                devicesTokens.put(data[0],data[1]);
+//            }
+//            br.close();
         }catch(Exception e){
 
         }

@@ -9,13 +9,24 @@ import java.util.concurrent.FutureTask;
  * Created by Administrator on 2017/10/23.
  */
 public class Test {
+    private Test(){
+        System.out.print("haha");
+    }
+
+    static class A{
+        private static Test t = new Test();
+    }
     public static void main(String agrs[]){
-        ExecutorService service = Executors.newCachedThreadPool();
-        service.submit(new MyTask(new Callable() {
-            public Object call() throws Exception {
-                return "hahahah";
-            }
-        }));
+
+       //         System.out.println("123");
+          //    Test t = A.t;
+
+//        ExecutorService service = Executors.newCachedThreadPool();
+//        service.submit(new MyTask(new Callable() {
+//            public Object call() throws Exception {
+//                return "hahahah";
+//            }
+//        }));
 
     }
 }

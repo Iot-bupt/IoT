@@ -40,7 +40,7 @@ public class LocalConsumer implements  Consumer{
                             String info = json.getString("info");
                             String deviceName = (String)json.get("deviceName") ;
 
-                            if(uId==null||dataType==null||info==null||deviceName==null){
+                            if(uId==null||dataType==null||info==null){
                                 System.err.println("missing paras because of null");
                                 continue;
                             }
