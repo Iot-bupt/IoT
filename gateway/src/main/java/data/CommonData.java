@@ -50,7 +50,7 @@ public class CommonData {
 
     @Override
     protected void finalize() throws Throwable {
-        // 对内存数据进行持久化操作
+        // 对内存数据进行持久化操
         //RedisUtil.setAllDevices();
 //        HashMap<String, String> map = new HashMap() ;
 //
