@@ -10,7 +10,7 @@ import java.util.Properties;
 
 /**
  * Created by tangjialiang on 2017/11/6.
- * tools
+ * tools a
  */
 public class KafkaHelper {
 
