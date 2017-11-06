@@ -1,7 +1,10 @@
+import com.alibaba.fastjson.JSONObject;
 import config.Config;
 import consumer.LocalConsumer;
 import consumer.MqttConsumer;
 import data.CommonData;
+import extensions.KafkaHelper;
+import extensions.MessgeRecorder;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -14,22 +17,6 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class App {
     public static void main(String[] args){
-//        RocketConsumer rocketConsumer = new RocketConsumer("iotConsumerGroup");
-//        MessageListenerConcurrently listener = new MessageListenerConcurrently(){
-//            LinkedBlockingQueue<String> rocketMQMsgCache = CommonData.getInstance().rocketMQMsgCache;
-//            public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
-//                try{
-//                    for (Message msg :list){
-//                        String content = new String(msg.getBody()) ;
-//                        rocketMQMsgCache.put(content);
-//                    }
-//                }catch(Exception e){
-//                    return ConsumeConcurrentlyStatus.RECONSUME_LATER;
-//                }
-//                return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
-//            }
-//        };
-//        rocketConsumer.init(Config.ROCKETMQURL,"simpleInstance",Config.TOPIC,listener);
 
         MqttConsumer mqttConsumer = new MqttConsumer();
         MqttCallback callback = new MqttCallback() {
@@ -41,6 +28,19 @@ public class App {
             public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
                 String data = new String (mqttMessage.getPayload());
                 rocketMQMsgCache.put(data);
+
+                // todo send msg[json] to kafka
+                JSONObject json = JSONObject.parseObject(data);
+                String uId = json.getString("uId");
+                String dataType = json.getString("dataType");
+                String info = json.getString("info");
+
+                if (!dataType.equals("telemetry")) return ;
+                MessgeRecorder mr = new MessgeRecorder(info) ;
+                mr.addCurTime().addUid(uId) ;
+
+                KafkaHelper kh = new KafkaHelper() ;
+                kh.sengMsg(mr.toJson().toString());
             }
 
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
