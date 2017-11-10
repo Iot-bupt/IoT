@@ -30,17 +30,21 @@ public class App {
                 rocketMQMsgCache.put(data);
 
                 // todo send msg[json] to kafka
-                JSONObject json = JSONObject.parseObject(data);
-                String uId = json.getString("uId");
-                String dataType = json.getString("dataType");
-                String info = json.getString("info");
+                try {
+                    JSONObject json = JSONObject.parseObject(data);
+                    String uId = json.getString("uId");
+                    String dataType = json.getString("dataType");
+                    String info = json.getString("info");
 
-                if (!dataType.equals("telemetry")) return ;
-                MessgeRecorder mr = new MessgeRecorder(info) ;
-                mr.addCurTime().addUid(uId) ;
+                    if (!dataType.equals("telemetry")) return;
+                    MessgeRecorder mr = new MessgeRecorder(info);
+                    mr.addCurTime().addUid(uId);
 
-                KafkaHelper kh = new KafkaHelper() ;
-                kh.sengMsg(mr.toJson().toString());
+                    KafkaHelper kh = new KafkaHelper();
+                    kh.sengMsg(mr.toJson().toString());
+                } catch (Exception e) {
+                    System.err.println("fail to send to kafka!") ;
+                }
             }
 
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
