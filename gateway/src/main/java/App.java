@@ -40,7 +40,7 @@ public class App {
                     MessgeRecorder mr = new MessgeRecorder(info);
                     mr.addCurTime().addUid(uId);
 
-                    KafkaHelper kh = new KafkaHelper();
+                    KafkaHelper kh = KafkaHelper.getInstance() ;
                     kh.sengMsg(mr.toJson().toString());
                 } catch (Exception e) {
                     System.err.println("fail to send to kafka!") ;
@@ -48,7 +48,6 @@ public class App {
             }
 
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-
             }
         };
         mqttConsumer.init(callback,Config.TOPIC);

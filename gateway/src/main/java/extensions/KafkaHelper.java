@@ -16,6 +16,12 @@ public class KafkaHelper {
 
     private Producer<String, String> producer = null ;
 
+    private static volatile  KafkaHelper instance = new  KafkaHelper();
+
+    public static KafkaHelper getInstance() {
+        return instance ;
+    }
+
     public KafkaHelper() {
         init() ;
     }
