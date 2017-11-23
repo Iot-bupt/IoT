@@ -47,6 +47,10 @@ public class MessgeRecorder {
         msgJson.put("uid", uid) ;
         return this ;
     }
+    public MessgeRecorder addData(String data) {
+        msgJson.put("Data", data) ;
+        return this ;
+    }
 
     public JSONObject toJson() {
         return msgJson ;
