@@ -48,7 +48,7 @@ public class MessgeRecorder {
         return this ;
     }
     public MessgeRecorder addData(String data) {
-        msgJson.put("Data", data) ;
+        msgJson.put("data", data) ;
         return this ;
     }
 
