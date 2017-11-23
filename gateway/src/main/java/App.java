@@ -34,11 +34,21 @@ public class App {
                     JSONObject json = JSONObject.parseObject(data);
                     String uId = json.getString("uId");
                     String dataType = json.getString("dataType");
-                    String info = json.getString("info");
+                    //String info = json.getString("info"); // data  temperature humidity
+
+                    String dataValue = "0" ;
+                    if (((JSONObject)json.get("info")).containsKey("data")) {
+                        dataValue = ((JSONObject)json.get("info")).getString("data") ;
+                    } else  if (((JSONObject)json.get("info")).containsKey("temperature")) {
+                        dataValue = ((JSONObject)json.get("info")).getString("temperature") ;
+                    } else  if (((JSONObject)json.get("info")).containsKey("humidity")) {
+                        dataValue = ((JSONObject)json.get("info")).getString("humidity") ;
+                    }
 
                     if (!dataType.equals("telemetry")) return;
-                    MessgeRecorder mr = new MessgeRecorder(info);
-                    mr.addCurTime().addUid(uId);
+
+                    MessgeRecorder mr = new MessgeRecorder();
+                    mr.addCurTime().addUid(uId).addData(dataValue);
 
                     KafkaHelper kh = KafkaHelper.getInstance() ;
                     kh.sengMsg(mr.toJson().toString());
