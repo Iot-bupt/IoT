@@ -4,7 +4,7 @@ package config;
  * Created by Administrator on 2017/10/24.
  */
 public class Config {
-    public static String THINGSBOARD_URL = "10.108.217.227";
+    public static String THINGSBOARD_URL = "39.104.84.131";
     public static int THINGSBOARD_PORT = 8080;
     public static String USER_NAME = "tenant@thingsboard.org";
     public static String PASSWORD = "tenant";

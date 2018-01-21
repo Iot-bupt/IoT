@@ -40,11 +40,10 @@ public class SynDeviceTeleMagHandler implements  Handler{
                 String deviceToken = CommonData.getInstance().devicesTokens.get(device.getuId());
                 thingsBoardApi.api_telemetry(userTocken, deviceToken, device.getInfo());
             } else {
-                return ;
-//                String deviceId = thingsBoardApi.api_device(userTocken, device.getDeviceName(), "default");
-//                String deviceToken = thingsBoardApi.api_accessToken(userTocken, deviceId);
-//                thingsBoardApi.api_telemetry(userTocken, deviceToken, device.getInfo());
-//                CommonData.getInstance().devicesTokens.put(device.getuId(), deviceToken);
+                String deviceId = thingsBoardApi.api_device(userTocken, device.getDeviceName(), "default");
+                String deviceToken = thingsBoardApi.api_accessToken(userTocken, deviceId);
+                thingsBoardApi.api_telemetry(userTocken, deviceToken, device.getInfo());
+                CommonData.getInstance().devicesTokens.put(device.getuId(), deviceToken);
             }
         }catch(Exception e){
             System.err.println("fail to handle msg ");

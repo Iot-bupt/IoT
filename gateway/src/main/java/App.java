@@ -26,6 +26,8 @@ public class App {
             }
 
             public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
+                System.out.println("---------"+.currentThread().getName());
+
                 String data = new String (mqttMessage.getPayload());
                 rocketMQMsgCache.put(data);
 
@@ -50,8 +52,8 @@ public class App {
                     MessgeRecorder mr = new MessgeRecorder();
                     mr.addCurTime().addUid(uId).addData(dataValue);
 
-                    KafkaHelper kh = KafkaHelper.getInstance() ;
-                    kh.sengMsg(mr.toJson().toString());
+//                    KafkaHelper kh = KafkaHelper.getInstance() ;
+//                    kh.sengMsg(mr.toJson().toString());
                 } catch (Exception e) {
                     System.err.println("fail to send to kafka!") ;
                 }
